@@ -91,7 +91,8 @@ footer strong{color:var(--text)}
   name="website"
   autocomplete="off"
   tabindex="-1"
-  style="display:none"
+  aria-hidden="true"
+  style="position:absolute;left:-9999px;top:-9999px;opacity:0;height:0;width:0;overflow:hidden"
 />
 
 <section class="hero">
@@ -174,7 +175,6 @@ footer strong{color:var(--text)}
 </footer>
 
 <script>
-// ── Validação nome ──
 function validarNome(){
   const v=document.getElementById('f-nome').value.trim();
   const h=document.getElementById('h-nome');
@@ -185,7 +185,6 @@ function validarNome(){
   h.textContent='✓ Nome válido';h.className='field-hint ok';el.className='valid';return true;
 }
 
-// ── Máscara telefone ──
 function mascararTel(e){
   let v=e.target.value.replace(/\D/g,'');
   if(v.length>11)v=v.slice(0,11);
@@ -204,7 +203,6 @@ function validarTel(){
   h.textContent='✓ WhatsApp válido';h.className='field-hint ok';el.className='valid';return true;
 }
 
-// ── Validação e-mail (formato + verificação de domínio via API) ──
 let emailTimer = null;
 
 document.getElementById('f-email').addEventListener('input', function () {
@@ -241,68 +239,108 @@ function validarEmail() {
   return true;
 }
 
-// ── Contador de chars ──
 function contarChars(){
   document.getElementById('char-n').textContent=document.getElementById('f-msg').value.length;
 }
 
-// ── Envio ──
-async function enviar(){
+async function enviar() {
 
-  if(document.getElementById('website').value){
-  return;
-}
+  const errEl = document.getElementById('msg-err');
+  const okEl  = document.getElementById('msg-ok');
+  const btn   = document.getElementById('btn-enviar');
+
+  errEl.style.display = 'none';
+  okEl.style.display  = 'none';
+
+  if (document.getElementById('website').value) return;
+
+  const RATE_KEY    = 'last_submit';
+  const lastSubmit  = sessionStorage.getItem(RATE_KEY);
+  if (lastSubmit && Date.now() - parseInt(lastSubmit) < 60000) {
+    errEl.textContent    = 'Aguarde 1 minuto antes de enviar novamente.';
+    errEl.style.display  = 'block';
+    return;
+  }
+
+  const timestamp = Date.now();
+  const token     = btoa(`guilherme:${timestamp}`);
+
+  const SECRET_KEY = "m8X9kL2pQ7vN5sR4tY1uA6zW";
 
   const nome  = document.getElementById('f-nome').value.trim();
   const tel   = document.getElementById('f-tel').value.trim();
   const email = document.getElementById('f-email').value.trim();
   const tipo  = document.getElementById('f-tipo').value;
   const msg   = document.getElementById('f-msg').value.trim();
-  const errEl = document.getElementById('msg-err');
-  const okEl  = document.getElementById('msg-ok');
-  const btn   = document.getElementById('btn-enviar');
 
-  errEl.style.display='none'; okEl.style.display='none';
+  const sanitize = s => s.replace(/[<>"'`;]/g, '').slice(0, 500);
 
-  // Sanitização básica
-  const sanitize=s=>s.replace(/[<>\"'`;]/g,'').slice(0,500);
+  if (!validarNome()) {
+    errEl.textContent   = 'Por favor, informe seu nome completo.';
+    errEl.style.display = 'block';
+    return;
+  }
+  const telNum = tel.replace(/\D/g, '');
+  if (telNum.length < 10) {
+    errEl.textContent   = 'Por favor, informe um WhatsApp válido.';
+    errEl.style.display = 'block';
+    return;
+  }
 
-  if(!validarNome()){errEl.textContent='Por favor, informe seu nome completo.';errEl.style.display='block';return}
-  const telNum=tel.replace(/\D/g,'');
-  if(telNum.length<10){errEl.textContent='Por favor, informe um WhatsApp válido.';errEl.style.display='block';return}
+  btn.disabled    = true;
+  btn.textContent = 'Enviando...';
 
-  btn.disabled=true; btn.textContent='Enviando...';
+  try {
+    const res = await fetch(
+      'https://script.google.com/macros/s/AKfycbwa4dV_LDG16xyfnQWpncurE2W7vjxXxquUUWFA4euiYf5vUDUW6XdHw75fMyHdZB3K/exec',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          secret:    SECRET_KEY,
+          token:     token,
+          timestamp: timestamp,
+          nome:      sanitize(nome),
+          telefone:  tel,
+          email:     sanitize(email),
+          tipo:      sanitize(tipo),
+          mensagem:  sanitize(msg)
+        })
+      }
+    );
 
-try{
-  const res = await fetch(
-    'https://script.google.com/macros/s/AKfycbwa4dV_LDG16xyfnQWpncurE2W7vjxXxquUUWFA4euiYf5vUDUW6XdHw75fMyHdZB3K/exec',
-    {
-      method:'POST',
-      body:JSON.stringify({
-        nome:sanitize(nome),
-        telefone:tel,
-        email:sanitize(email),
-        tipo:sanitize(tipo),
-        mensagem:sanitize(msg)
-      })
-    }
-  );
-    const data=await res.json();
-    if(data.ok){
-      ['f-nome','f-tel','f-email','f-msg'].forEach(id=>document.getElementById(id).value='');
-      document.getElementById('f-tipo').selectedIndex=0;
-      document.getElementById('char-n').textContent='0';
-      // Link personalizado com nome e tipo
-      const waMsg=encodeURIComponent(`Olá Guilherme! Me chamo ${nome} e tenho interesse na análise de ${tipo}. Preenchi o formulário do site.`);
-      document.getElementById('wa-link').href=`https://wa.me/5511932758217?text=${waMsg}`;
-      okEl.style.display='block'; btn.style.display='none';
+    const data = await res.json();
+
+    if (data.ok) {
+      
+      ['f-nome', 'f-tel', 'f-email', 'f-msg'].forEach(
+        id => (document.getElementById(id).value = '')
+      );
+      document.getElementById('f-tipo').selectedIndex = 0;
+      document.getElementById('char-n').textContent   = '0';
+
+      sessionStorage.setItem(RATE_KEY, Date.now().toString());
+
+      const waMsg = encodeURIComponent(
+        `Olá Guilherme! Me chamo ${nome} e tenho interesse na análise de ${tipo}. Preenchi o formulário do site.`
+      );
+      document.getElementById('wa-link').href =
+        `https://wa.me/5511932758217?text=${waMsg}`;
+
+      okEl.style.display  = 'block';
+      btn.style.display   = 'none';
+
     } else {
-      errEl.textContent=data.erro||'Erro ao enviar. Tente novamente.';
-      errEl.style.display='block'; btn.disabled=false; btn.textContent='Quero minha análise grátis →';
+      errEl.textContent   = data.erro || 'Erro ao enviar. Tente novamente.';
+      errEl.style.display = 'block';
+      btn.disabled        = false;
+      btn.textContent     = 'Quero minha análise grátis →';
     }
-  }catch{
-    errEl.textContent='Erro de conexão. Tente novamente em instantes.';
-    errEl.style.display='block'; btn.disabled=false; btn.textContent='Quero minha análise grátis →';
+
+  } catch {
+    errEl.textContent   = 'Erro de conexão. Tente novamente em instantes.';
+    errEl.style.display = 'block';
+    btn.disabled        = false;
+    btn.textContent     = 'Quero minha análise grátis →';
   }
 }
 </script>
