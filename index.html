@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Guilherme Revisão Bancária — Análise Grátis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b14;--surface:#0f1420;--card:#141926;--border:#1e2640;
+  --accent:#4f6ef7;--accent2:#00e676;--text:#eef0fb;--muted:#7a80a0;--danger:#ff6b6b;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:2rem 1rem;text-align:center;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,#1a2a6c22 0%,transparent 70%)}
+.badge{display:inline-flex;align-items:center;gap:8px;background:#0d1630;border:1px solid var(--border);
+  border-radius:100px;padding:6px 18px;font-size:13px;color:var(--muted);margin-bottom:2rem}
+.badge span{width:8px;height:8px;border-radius:50%;background:var(--accent2);display:inline-block;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+h1{font-family:'Sora',sans-serif;font-size:clamp(2rem,6vw,3.6rem);font-weight:800;line-height:1.1;
+  letter-spacing:-0.02em;max-width:700px;margin-bottom:1.25rem}
+h1 em{font-style:normal;background:linear-gradient(90deg,#4f6ef7,#00e676);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{font-size:clamp(15px,2.5vw,18px);color:var(--muted);max-width:520px;line-height:1.7;margin-bottom:2.5rem}
+.stats{display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;margin-bottom:3rem}
+.stat{text-align:center}
+.stat-num{font-family:'Sora',sans-serif;font-size:2rem;font-weight:800;color:var(--accent2);line-height:1}
+.stat-lbl{font-size:12px;color:var(--muted);margin-top:4px}
+.form-wrap{width:100%;max-width:480px;background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:2rem;box-shadow:0 0 60px #4f6ef70a}
+.form-title{font-family:'Sora',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:4px}
+.form-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem}
+.field{margin-bottom:1rem;position:relative}
+.field label{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-bottom:6px;
+  text-transform:uppercase;letter-spacing:.05em}
+.field input,.field select,.field textarea{width:100%;background:#0a0e1a;border:1px solid var(--border);
+  border-radius:10px;padding:12px 14px;font-size:15px;color:var(--text);
+  font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
+.field input.valid{border-color:var(--accent2)}
+.field input.invalid{border-color:var(--danger)}
+.field-hint{font-size:11px;margin-top:4px;min-height:16px;transition:color .2s}
+.field-hint.ok{color:var(--accent2)}
+.field-hint.err{color:var(--danger)}
+.field textarea{resize:vertical;min-height:80px}
+.field select option{background:#0f1420}
+.char-count{font-size:11px;color:var(--muted);text-align:right;margin-top:2px}
+.btn-submit{width:100%;padding:14px;border:none;border-radius:12px;
+  background:linear-gradient(135deg,#4f6ef7,#3a55d4);color:#fff;
+  font-family:'Sora',sans-serif;font-size:16px;font-weight:700;cursor:pointer;
+  transition:opacity .2s,transform .15s;margin-top:.5rem}
+.btn-submit:hover{opacity:.9;transform:translateY(-1px)}
+.btn-submit:active{transform:scale(.98)}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.msg-ok{display:none;text-align:center;padding:1.5rem;background:#1b4332;
+  border:1px solid #00e676;border-radius:12px;margin-top:1rem}
+.msg-ok .icon{font-size:2.5rem;margin-bottom:.5rem}
+.msg-ok h3{font-family:'Sora',sans-serif;font-size:1.1rem;color:var(--accent2);margin-bottom:.5rem}
+.msg-ok p{font-size:13px;color:#a0d9b5;margin-bottom:.75rem}
+.msg-ok .wa-btn{display:inline-flex;align-items:center;gap:8px;background:#25d366;
+  color:#fff;padding:10px 22px;border-radius:10px;font-weight:700;font-size:14px;
+  text-decoration:none;font-family:'Sora',sans-serif;transition:opacity .2s}
+.msg-ok .wa-btn:hover{opacity:.88}
+.msg-err{display:none;font-size:13px;color:var(--danger);margin-top:8px;text-align:center;padding:8px;
+  background:#2a0a0a;border-radius:8px;border:1px solid #4a1010}
+.steps{padding:5rem 1rem;max-width:900px;margin:0 auto;text-align:center}
+.steps h2{font-family:'Sora',sans-serif;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;margin-bottom:.5rem}
+.steps-sub{font-size:15px;color:var(--muted);margin-bottom:3rem}
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem}
+.step-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem 1.25rem;text-align:left}
+.step-num{width:36px;height:36px;border-radius:50%;background:#1a2a6c;color:var(--accent);
+  font-family:'Sora',sans-serif;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:1rem;border:1px solid #2a3a8c}
+.step-card h3{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;margin-bottom:.5rem}
+.step-card p{font-size:13px;color:var(--muted);line-height:1.6}
+footer{border-top:1px solid var(--border);padding:2rem 1rem;text-align:center;
+  font-size:12px;color:var(--muted);line-height:1.8}
+footer strong{color:var(--text)}
+@media(max-width:600px){.stats{gap:1.25rem}.stat-num{font-size:1.5rem}.form-wrap{padding:1.5rem}}
+</style>
+</head>
+<body>
+
+<input
+  type="text"
+  id="website"
+  name="website"
+  autocomplete="off"
+  tabindex="-1"
+  style="display:none"
+/>
+
+<section class="hero">
+  <div class="badge"><span></span> Análise 100% gratuita e sem compromisso</div>
+  <h1>Seu banco pode estar te <em>cobrando a mais</em></h1>
+  <p class="subtitle">Faço uma revisão completa do seu financiamento ou empréstimo e identifico cobranças abusivas que você tem direito de recuperar — de graça.</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">30%</div><div class="stat-lbl">Redução média nas parcelas</div></div>
+    <div class="stat"><div class="stat-num">R$ 0</div><div class="stat-lbl">Custo da análise</div></div>
+    <div class="stat"><div class="stat-num">48h</div><div class="stat-lbl">Resultado em até</div></div>
+  </div>
+
+  <div class="form-wrap">
+    <div class="form-title">Quero minha análise grátis</div>
+    <div class="form-sub">Preencha abaixo e entro em contato hoje mesmo</div>
+
+    <div class="field">
+      <label>Seu nome completo *</label>
+      <input type="text" id="f-nome" placeholder="Ex: Maria da Silva" autocomplete="name" maxlength="80" oninput="validarNome()"/>
+      <div class="field-hint" id="h-nome"></div>
+    </div>
+
+    <div class="field">
+      <label>WhatsApp *</label>
+      <input type="tel" id="f-tel" placeholder="(11) 99999-9999" autocomplete="tel" oninput="mascararTel(event)" onblur="validarTel()"/>
+      <div class="field-hint" id="h-tel"></div>
+    </div>
+
+    <div class="field">
+      <label>E-mail <span style="color:var(--muted);font-size:11px">(recomendado)</span></label>
+      <input type="email" id="f-email" placeholder="seu@email.com" autocomplete="email" maxlength="120" onblur="validarEmail()"/>
+      <div class="field-hint" id="h-email">ℹ️ Verificaremos se o domínio do e-mail é válido</div>
+    </div>
+
+    <div class="field">
+      <label>Tipo de contrato</label>
+      <select id="f-tipo">
+        <option value="Financiamento de veículo">🚗 Financiamento de veículo</option>
+        <option value="Financiamento imobiliário">🏠 Financiamento imobiliário</option>
+        <option value="Empréstimo pessoal">💰 Empréstimo pessoal</option>
+        <option value="Outro">📋 Outro</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Mensagem <span style="color:var(--muted);font-size:11px">(opcional)</span></label>
+      <textarea id="f-msg" placeholder="Conta um pouco sobre o seu caso..." maxlength="500" oninput="contarChars()"></textarea>
+      <div class="char-count"><span id="char-n">0</span>/500</div>
+    </div>
+
+    <button class="btn-submit" id="btn-enviar" onclick="enviar()">Quero minha análise grátis →</button>
+    <div class="msg-err" id="msg-err"></div>
+
+    <div class="msg-ok" id="msg-ok">
+      <div class="icon">✅</div>
+      <h3>Recebido! Entro em contato em breve.</h3>
+      <p>Pode me chamar diretamente no WhatsApp também:</p>
+      <a class="wa-btn" id="wa-link" href="https://wa.me/5511932758217" target="_blank" rel="noopener">
+        📱 Chamar no WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="steps">
+  <h2>Como funciona</h2>
+  <p class="steps-sub">Simples, rápido e sem burocracia</p>
+  <div class="steps-grid">
+    <div class="step-card"><div class="step-num">1</div><h3>Você preenche o formulário</h3><p>Nome e WhatsApp são suficientes para eu começar a análise.</p></div>
+    <div class="step-card"><div class="step-num">2</div><h3>Eu faço a revisão</h3><p>Analiso seu contrato e identifico cobranças irregulares de Seguro Prestamista, Tarifa de Avaliação e Taxa de Cadastro.</p></div>
+    <div class="step-card"><div class="step-num">3</div><h3>Você recebe o resultado</h3><p>Mostro exatamente quanto você tem direito a recuperar e como o banco é obrigado a corrigir.</p></div>
+    <div class="step-card"><div class="step-num">4</div><h3>Zero custo pra você</h3><p>A análise é completamente gratuita. Sem letra miúda, sem pegadinha.</p></div>
+  </div>
+</section>
+
+<footer>
+  <strong>Guilherme — Revisão Bancária</strong><br/>
+  Base legal: Resolução 3919 do BACEN/CMN · Arts. 39, 45 e 51 do Código de Defesa do Consumidor<br/>
+  Este serviço não representa consultoria jurídica. Os resultados podem variar conforme cada contrato.
+</footer>
+
+<script>
+// ── Validação nome ──
+function validarNome(){
+  const v=document.getElementById('f-nome').value.trim();
+  const h=document.getElementById('h-nome');
+  const el=document.getElementById('f-nome');
+  if(v.length===0){h.textContent='';h.className='field-hint';el.className='';return false}
+  if(v.length<3){h.textContent='Nome muito curto';h.className='field-hint err';el.className='invalid';return false}
+  if(!/^[a-zA-ZÀ-ÿ\s'-]+$/.test(v)){h.textContent='Apenas letras, espaços e hífens';h.className='field-hint err';el.className='invalid';return false}
+  h.textContent='✓ Nome válido';h.className='field-hint ok';el.className='valid';return true;
+}
+
+// ── Máscara telefone ──
+function mascararTel(e){
+  let v=e.target.value.replace(/\D/g,'');
+  if(v.length>11)v=v.slice(0,11);
+  if(v.length>6)v=v.replace(/^(\d{2})(\d{5})(\d{0,4})/,'($1) $2-$3');
+  else if(v.length>2)v=v.replace(/^(\d{2})(\d{0,5})/,'($1) $2');
+  else if(v.length>0)v=v.replace(/^(\d{0,2})/,'($1');
+  e.target.value=v;
+}
+function validarTel(){
+  const v=document.getElementById('f-tel').value.replace(/\D/g,'');
+  const h=document.getElementById('h-tel');
+  const el=document.getElementById('f-tel');
+  if(v.length===0){h.textContent='';h.className='field-hint';el.className='';return true}
+  if(v.length<10){h.textContent='Número incompleto';h.className='field-hint err';el.className='invalid';return false}
+  if(v.length===11&&v[2]!=='9'){h.textContent='Celular deve começar com 9';h.className='field-hint err';el.className='invalid';return false}
+  h.textContent='✓ WhatsApp válido';h.className='field-hint ok';el.className='valid';return true;
+}
+
+// ── Validação e-mail (formato + verificação de domínio via API) ──
+let emailTimer = null;
+
+document.getElementById('f-email').addEventListener('input', function () {
+  clearTimeout(emailTimer);
+  emailTimer = setTimeout(validarEmail, 600);
+});
+
+function validarEmail() {
+
+  const v = document.getElementById('f-email').value.trim();
+  const h = document.getElementById('h-email');
+  const el = document.getElementById('f-email');
+
+  if (v.length === 0) {
+    h.textContent = '';
+    h.className = 'field-hint';
+    el.className = '';
+    return true;
+  }
+
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  if (!re.test(v)) {
+    h.textContent = 'Formato de e-mail inválido';
+    h.className = 'field-hint err';
+    el.className = 'invalid';
+    return false;
+  }
+
+  h.textContent = '✓ E-mail válido';
+  h.className = 'field-hint ok';
+  el.className = 'valid';
+
+  return true;
+}
+
+// ── Contador de chars ──
+function contarChars(){
+  document.getElementById('char-n').textContent=document.getElementById('f-msg').value.length;
+}
+
+// ── Envio ──
+async function enviar(){
+
+  if(document.getElementById('website').value){
+  return;
+}
+
+  const nome  = document.getElementById('f-nome').value.trim();
+  const tel   = document.getElementById('f-tel').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const tipo  = document.getElementById('f-tipo').value;
+  const msg   = document.getElementById('f-msg').value.trim();
+  const errEl = document.getElementById('msg-err');
+  const okEl  = document.getElementById('msg-ok');
+  const btn   = document.getElementById('btn-enviar');
+
+  errEl.style.display='none'; okEl.style.display='none';
+
+  // Sanitização básica
+  const sanitize=s=>s.replace(/[<>\"'`;]/g,'').slice(0,500);
+
+  if(!validarNome()){errEl.textContent='Por favor, informe seu nome completo.';errEl.style.display='block';return}
+  const telNum=tel.replace(/\D/g,'');
+  if(telNum.length<10){errEl.textContent='Por favor, informe um WhatsApp válido.';errEl.style.display='block';return}
+
+  btn.disabled=true; btn.textContent='Enviando...';
+
+try{
+  const res = await fetch(
+    'https://script.google.com/macros/s/AKfycbwa4dV_LDG16xyfnQWpncurE2W7vjxXxquUUWFA4euiYf5vUDUW6XdHw75fMyHdZB3K/exec',
+    {
+      method:'POST',
+      body:JSON.stringify({
+        nome:sanitize(nome),
+        telefone:tel,
+        email:sanitize(email),
+        tipo:sanitize(tipo),
+        mensagem:sanitize(msg)
+      })
+    }
+  );
+    const data=await res.json();
+    if(data.ok){
+      ['f-nome','f-tel','f-email','f-msg'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('f-tipo').selectedIndex=0;
+      document.getElementById('char-n').textContent='0';
+      // Link personalizado com nome e tipo
+      const waMsg=encodeURIComponent(`Olá Guilherme! Me chamo ${nome} e tenho interesse na análise de ${tipo}. Preenchi o formulário do site.`);
+      document.getElementById('wa-link').href=`https://wa.me/5511932758217?text=${waMsg}`;
+      okEl.style.display='block'; btn.style.display='none';
+    } else {
+      errEl.textContent=data.erro||'Erro ao enviar. Tente novamente.';
+      errEl.style.display='block'; btn.disabled=false; btn.textContent='Quero minha análise grátis →';
+    }
+  }catch{
+    errEl.textContent='Erro de conexão. Tente novamente em instantes.';
+    errEl.style.display='block'; btn.disabled=false; btn.textContent='Quero minha análise grátis →';
+  }
+}
+</script>
+</body>
+</html>
