@@ -15,7 +15,6 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
 
-/* ── HERO ── */
 .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:2rem 1rem;text-align:center;
   background:radial-gradient(ellipse 80% 60% at 50% 0%,#1a2a6c22 0%,transparent 70%)}
@@ -33,13 +32,11 @@ h1 em{font-style:normal;background:linear-gradient(90deg,#4f6ef7,#00e676);
 .stat-num{font-family:'Sora',sans-serif;font-size:2rem;font-weight:800;color:var(--accent2);line-height:1}
 .stat-lbl{font-size:12px;color:var(--muted);margin-top:4px}
 
-/* ── FORM CARD ── */
 .form-wrap{width:100%;max-width:480px;background:var(--card);border:1px solid var(--border);
   border-radius:20px;padding:2rem;box-shadow:0 0 60px #4f6ef70a}
 .form-title{font-family:'Sora',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:4px}
 .form-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem}
 
-/* ── FIELDS ── */
 .field{margin-bottom:1rem;position:relative}
 .field label{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-bottom:6px;
   text-transform:uppercase;letter-spacing:.05em}
@@ -56,7 +53,6 @@ h1 em{font-style:normal;background:linear-gradient(90deg,#4f6ef7,#00e676);
 .field select option{background:#0f1420}
 .char-count{font-size:11px;color:var(--muted);text-align:right;margin-top:2px}
 
-/* ── MENSAGEM COLAPSÁVEL ── */
 .msg-toggle{background:none;border:none;color:var(--accent);font-size:13px;cursor:pointer;
   padding:0;margin-bottom:1rem;display:flex;align-items:center;gap:6px;font-family:'Inter',sans-serif}
 .msg-toggle:hover{color:#7a95ff}
@@ -65,12 +61,10 @@ h1 em{font-style:normal;background:linear-gradient(90deg,#4f6ef7,#00e676);
 .field-msg{overflow:hidden;max-height:0;transition:max-height .35s ease,opacity .3s ease;opacity:0}
 .field-msg.open{max-height:200px;opacity:1}
 
-/* ── CONFIANÇA ── */
 .trust-line{display:flex;align-items:center;justify-content:center;gap:6px;
   font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;text-align:center}
 .trust-line svg{flex-shrink:0;opacity:.7}
 
-/* ── BOTÃO ── */
 .btn-submit{width:100%;padding:14px;border:none;border-radius:12px;
   background:linear-gradient(135deg,#4f6ef7,#3a55d4);color:#fff;
   font-family:'Sora',sans-serif;font-size:16px;font-weight:700;cursor:pointer;
@@ -79,7 +73,6 @@ h1 em{font-style:normal;background:linear-gradient(90deg,#4f6ef7,#00e676);
 .btn-submit:active{transform:scale(.98)}
 .btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
-/* ── MENSAGENS ── */
 .msg-ok{display:none;text-align:center;padding:1.5rem;background:#1b4332;
   border:1px solid #00e676;border-radius:12px;margin-top:1rem}
 .msg-ok .icon{font-size:2.5rem;margin-bottom:.5rem}
@@ -92,11 +85,9 @@ h1 em{font-style:normal;background:linear-gradient(90deg,#4f6ef7,#00e676);
 .msg-err{display:none;font-size:13px;color:var(--danger);margin-top:8px;text-align:center;padding:8px;
   background:#2a0a0a;border-radius:8px;border:1px solid #4a1010}
 
-/* ── DIVISOR ── */
 .section-divider{width:100%;max-width:900px;margin:0 auto;
   border:none;border-top:1px solid var(--border);opacity:.5}
 
-/* ── STEPS ── */
 .steps{padding:5rem 1rem;max-width:900px;margin:0 auto;text-align:center}
 .steps h2{font-family:'Sora',sans-serif;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;margin-bottom:.5rem}
 .steps-sub{font-size:15px;color:var(--muted);margin-bottom:3rem}
@@ -108,7 +99,6 @@ h1 em{font-style:normal;background:linear-gradient(90deg,#4f6ef7,#00e676);
 .step-card h3{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;margin-bottom:.5rem}
 .step-card p{font-size:13px;color:var(--muted);line-height:1.6}
 
-/* ── FOOTER ── */
 footer{border-top:1px solid var(--border);padding:2rem 1rem;text-align:center;
   font-size:12px;color:var(--muted);line-height:1.8}
 footer strong{color:var(--text)}
@@ -118,7 +108,6 @@ footer strong{color:var(--text)}
 </head>
 <body>
 
-<!-- Honeypot anti-bot -->
 <input
   type="text"
   id="website"
@@ -143,21 +132,18 @@ footer strong{color:var(--text)}
     <div class="form-title">Quero minha análise grátis</div>
     <div class="form-sub">Preencha abaixo e entro em contato hoje mesmo</div>
 
-    <!-- Nome -->
     <div class="field">
       <label>Seu nome completo *</label>
       <input type="text" id="f-nome" placeholder="Ex: Maria da Silva" autocomplete="name" maxlength="80" oninput="validarNome()"/>
       <div class="field-hint" id="h-nome"></div>
     </div>
 
-    <!-- WhatsApp -->
     <div class="field">
       <label>WhatsApp *</label>
       <input type="tel" id="f-tel" placeholder="(11) 99999-9999" autocomplete="tel" oninput="mascararTel(event)" onblur="validarTel()"/>
       <div class="field-hint" id="h-tel"></div>
     </div>
 
-    <!-- Tipo de contrato (antes do e-mail) -->
     <div class="field">
       <label>Tipo de contrato</label>
       <select id="f-tipo">
@@ -168,14 +154,12 @@ footer strong{color:var(--text)}
       </select>
     </div>
 
-    <!-- E-mail (depois do tipo) -->
     <div class="field">
       <label>E-mail <span style="color:var(--muted);font-size:11px">(recomendado)</span></label>
       <input type="email" id="f-email" placeholder="seu@email.com" autocomplete="email" maxlength="120" onblur="validarEmail()"/>
       <div class="field-hint" id="h-email"></div>
     </div>
 
-    <!-- Mensagem colapsável -->
     <button type="button" class="msg-toggle" id="btn-msg-toggle" onclick="toggleMensagem()">
       <em class="arrow">›</em> Adicionar uma observação <span style="color:var(--muted);font-size:11px">(opcional)</span>
     </button>
@@ -188,7 +172,6 @@ footer strong{color:var(--text)}
 
     <button class="btn-submit" id="btn-enviar" onclick="enviar()">Quero minha análise grátis →</button>
 
-    <!-- Microtexto de confiança -->
     <div class="trust-line">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       Seus dados são usados apenas para entrar em contato. Não compartilhamos com terceiros.
@@ -207,7 +190,6 @@ footer strong{color:var(--text)}
   </div>
 </section>
 
-<!-- Divisor visual entre hero e steps -->
 <hr class="section-divider"/>
 
 <section class="steps">
@@ -228,7 +210,6 @@ footer strong{color:var(--text)}
 </footer>
 
 <script>
-// ── Validação nome ──
 function validarNome(){
   const v=document.getElementById('f-nome').value.trim();
   const h=document.getElementById('h-nome');
@@ -239,7 +220,6 @@ function validarNome(){
   h.textContent='✓ Nome válido';h.className='field-hint ok';el.className='valid';return true;
 }
 
-// ── Máscara telefone ──
 function mascararTel(e){
   let v=e.target.value.replace(/\D/g,'');
   if(v.length>11)v=v.slice(0,11);
@@ -258,7 +238,6 @@ function validarTel(){
   h.textContent='✓ WhatsApp válido';h.className='field-hint ok';el.className='valid';return true;
 }
 
-// ── Validação e-mail ──
 let emailTimer=null;
 document.getElementById('f-email').addEventListener('input',function(){
   clearTimeout(emailTimer);
@@ -274,12 +253,10 @@ function validarEmail(){
   h.textContent='✓ E-mail válido';h.className='field-hint ok';el.className='valid';return true;
 }
 
-// ── Contador de chars ──
 function contarChars(){
   document.getElementById('char-n').textContent=document.getElementById('f-msg').value.length;
 }
 
-// ── Toggle mensagem ──
 function toggleMensagem(){
   const wrap=document.getElementById('field-msg-wrap');
   const btn=document.getElementById('btn-msg-toggle');
@@ -292,7 +269,6 @@ function toggleMensagem(){
   }
 }
 
-// ── Envio ──
 async function enviar(){
   const errEl=document.getElementById('msg-err');
   const okEl=document.getElementById('msg-ok');
@@ -301,10 +277,8 @@ async function enviar(){
   errEl.style.display='none';
   okEl.style.display='none';
 
-  // Honeypot
   if(document.getElementById('website').value) return;
 
-  // Rate limit
   const RATE_KEY='last_submit';
   const lastSubmit=sessionStorage.getItem(RATE_KEY);
   if(lastSubmit&&Date.now()-parseInt(lastSubmit)<60000){
@@ -362,7 +336,6 @@ async function enviar(){
       ['f-nome','f-tel','f-email','f-msg'].forEach(id=>document.getElementById(id).value='');
       document.getElementById('f-tipo').selectedIndex=0;
       document.getElementById('char-n').textContent='0';
-      // Fecha mensagem se estiver aberta
       document.getElementById('field-msg-wrap').classList.remove('open');
       document.getElementById('btn-msg-toggle').classList.remove('open');
 
